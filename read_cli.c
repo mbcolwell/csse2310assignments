@@ -41,4 +41,7 @@ void setCmdArgs(
             printf("Unknown argument passed: %s\n", argv[i]);
         }
     }
+    if (dictPath[0] == '\0') {
+        strcpy(dictPath, "/usr/share/dict/words");
+    }
 }

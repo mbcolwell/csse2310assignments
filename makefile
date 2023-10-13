@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -std=c17 -Wall -fmax-errors=10 -Wextra
 LFLAGS = 
 LIBS = 
-OBJFILES = unjumble.o read_cli.o read_dict.o
+OBJFILES = unjumble.o read_cli.o read_dict.o matching.o
 MAIN = unjumble
 
 

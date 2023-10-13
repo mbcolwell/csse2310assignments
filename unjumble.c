@@ -23,15 +23,16 @@ int main(int argc, char **argv) {
     //     printf("%s\n", words[i]);
     // }
     // printf("%d\n", nWords);
+
     char **matchedWords = matchWords(letters, l, words, nWords, &nMatched);
     freeWords(words, nWords);
-    int *matchOrder = sortMatched(matchedWords, nMatched, sortMode);
+    // int *matchOrder = sortMatched(matchedWords, nMatched, sortMode);
 
     int i;
     for (i=0; i<nMatched; i++) {
-        printf("%s", matchedWords[matchOrder[i]]);
+        printf("%s\n", matchedWords[i]);  //[matchOrder[i]]);
     }
-    freeWords(matchedWords);
+    freeWords(matchedWords, nMatched);
 
     return 0;
 }

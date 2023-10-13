@@ -39,6 +39,7 @@ void setCmdArgs(
             strcpy(dictPath, argv[i]);
         } else {
             printf("Unknown argument passed: %s\n", argv[i]);
+            return;
         }
     }
     if (dictPath[0] == '\0') {

@@ -30,15 +30,16 @@ int main(int argc, char **argv) {
     char **matchedWords = matchWords(letters, l, words, nWords, &nMatched);
     freeWords(words, nWords);
     free(words);
-    int * sortIdx = sortWords(matchedWords, nMatched, sortMode);
+
+    // Passing matched words and nMatched as reference to handle -len option
+    sortWords(&matchedWords, nMatched, sortMode, &nMatched);
 
     int i;
     for (i=0; i<nMatched; i++) {
-        printf("%s\n", matchedWords[sortIdx[i]]);
+        printf("%s\n", matchedWords[i]);
     }
     freeWords(matchedWords, nMatched);
     free(matchedWords);
-    free(sortIdx);
 
     return 0;
 }

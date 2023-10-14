@@ -16,9 +16,8 @@ int _wordMatch(char * letters, char l, char * word, int nLetters, int nWord) {
     if (nWord > (nLetters + 1)) return 0;  // + 1 to include l
 
     int * used = calloc(nLetters, sizeof(int));  // calloc initialises all to 0
-    int i, j;
+    int i, j, c;
     int lLoc = -1;
-    int nMatched = 0;
 
     // first find l if necessary and record its location
     if (l != '\0') {
@@ -26,7 +25,6 @@ int _wordMatch(char * letters, char l, char * word, int nLetters, int nWord) {
         if (lLoc == -1) {
             return 0;
         }
-        nMatched++;
     }
 
     for (i=0; i<nWord; i++) {
@@ -34,16 +32,21 @@ int _wordMatch(char * letters, char l, char * word, int nLetters, int nWord) {
 
         j=-1;
         do {
-            // starting at letters+0, move pointer to next position in letters if 
-            j = charIndex((letters+j+1), word[i]);
-        } while (j != -1 && used[j]);  // Exit if j == -1 OR used[j] == 1
+            // starting at letters+0 in char array, find next available character
+            j++;
+            c = charIndex((letters+j), word[i]);
+            j += c;
+        } while (c != -1 && used[j]);  // Exit if c == -1 OR used[j] == 1
 
-        if (j != -1) {
+        if (c != -1) {
             used[j] = 1;
-            nMatched++;
+        } else {
+            // unable to find an available character for word[i] so return not matched
+            return 0;
         }
     }
-    return (nMatched==nWord);
+    // Made it through the whole word finding available characters so return matched
+    return 1;
 }
 
 char * _wordUpper(char * word) {
@@ -83,8 +86,6 @@ char ** matchWords(char * letters, char l, char ** words, int nWords, int * nMat
             (*nMatched)++;
         }
     }
-
-    
     char ** matchedWords = calloc(*nMatched, sizeof(char *));
     j = 0;
     for (i=0; i<*nMatched; i++) {

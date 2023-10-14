@@ -1,7 +1,9 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include "read_cli.h"
 #include "read_dict.h"
 #include "matching.h"
+#include "sort.h"
 
 
 int main(int argc, char **argv) {
@@ -26,13 +28,15 @@ int main(int argc, char **argv) {
 
     char **matchedWords = matchWords(letters, l, words, nWords, &nMatched);
     freeWords(words, nWords);
-    // int *matchOrder = sortMatched(matchedWords, nMatched, sortMode);
+    free(words);
+    sortWords(matchedWords, nMatched, sortMode);
 
     int i;
     for (i=0; i<nMatched; i++) {
         printf("%s\n", matchedWords[i]);  //[matchOrder[i]]);
     }
     freeWords(matchedWords, nMatched);
+    free(matchedWords);
 
     return 0;
 }

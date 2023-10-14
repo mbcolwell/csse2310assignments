@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
     int nWords, nMatched;
 
     setCmdArgs(&sortMode, &l, letters, dictPath, argc, argv);
-    if (letters[0] == '\0') {
+    if (letters[0] == '\0' || sortMode == 'i') {
+        printf("Invalid inputs\n");
         return 1;
     }
     // printf("Mode: %c\nletter: %c\nletters: %s\ndictPath: %s\n", mode, l, letters, dictPath);
@@ -29,14 +30,15 @@ int main(int argc, char **argv) {
     char **matchedWords = matchWords(letters, l, words, nWords, &nMatched);
     freeWords(words, nWords);
     free(words);
-    sortWords(matchedWords, nMatched, sortMode);
+    int * sortIdx = sortWords(matchedWords, nMatched, sortMode);
 
     int i;
     for (i=0; i<nMatched; i++) {
-        printf("%s\n", matchedWords[i]);  //[matchOrder[i]]);
+        printf("%s\n", matchedWords[sortIdx[i]]);
     }
     freeWords(matchedWords, nMatched);
     free(matchedWords);
+    free(sortIdx);
 
     return 0;
 }

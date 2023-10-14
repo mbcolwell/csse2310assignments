@@ -16,4 +16,12 @@ $(MAIN): $(OBJFILES)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(OBJFILES) $(MAIN)
+	rm -f $(OBJFILES) $(MAIN) valgrind-out.txt
+
+valgrind:
+	valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --log-file=valgrind-out.txt \
+         ./$(MAIN) -include c abde sample_dict

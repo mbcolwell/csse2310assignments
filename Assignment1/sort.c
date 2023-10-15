@@ -54,57 +54,53 @@ int * _wordLengths(char ** words, int n, int * maxLength, int * nMatched) {
     return wordLengths;
 }
 
+void _longestWords(char *** words, int n, int * nMatched) {
+    int i, j;
+    int maxLength = 0;
+    *nMatched = 1;
+    int * wordLengths = _wordLengths(*words, n, &maxLength, nMatched);
+    char ** longWords = malloc(sizeof(char *)*(*nMatched));
+
+    j=0;
+    for (i=0; i<n; i++) {
+        if (wordLengths[i] < maxLength) {
+            free((*words)[i]);
+        } else {
+            longWords[j] = (*words)[i];
+            j++;
+        }
+    }
+    free((*words));
+    *words = longWords;
+    free(wordLengths);
+}
+
 // Functions necessary for length sort
-int _lengthCompare(const char * a, const char * b) {
-    // We want to achieve ordering such that AaBbCc...
-    // Convert ascii to int with A=1, a=2, B=3 ...
+int _qsortLength(const void* a, const void* b) {
+    const char * aStr = *(const char**)a;
+    const char * bStr = *(const char**)b;
 
     int aLen = 0;
     int bLen = 0;
 
-    while (a[aLen] != '\0') aLen++;
-    while (b[bLen] != '\0') bLen++;
+    while (aStr[aLen] != '\0') aLen++;
+    while (bStr[bLen] != '\0') bLen++;
 
-    return -1*(aLen - bLen);
-}
-
-int _qsortLength(const void* a, const void* b) {
-    return _lengthCompare(*(const char**)a, *(const char**)b); 
-}
-
-void _lenSort(char ** words, int n) {
-    qsort(words, n, sizeof(const char*), _qsortLength); 
+    return (bLen - aLen); 
 }
 
 // Function called in main() to sort words array
 void sortWords(char *** words, int n, char sortMode, int * nMatched) {
-
     switch (sortMode) {
         case 'd':
             return;
         case 'n':
             _alphaSort(*words, n);
-            int i, j;
-            int maxLength = 0;
-            *nMatched = 1;
-            int * wordLengths = _wordLengths(*words, n, &maxLength, nMatched);
-            char ** longWords = malloc(sizeof(char *)*(*nMatched));
-
-            j=0;
-            for (i=0; i<n; i++) {
-                if (wordLengths[i] < maxLength) {
-                    free((*words)[i]);
-                } else {
-                    longWords[j] = (*words)[i];
-                    j++;
-                }
-            }
-            *words = longWords;
-            free(wordLengths);
+            _longestWords(words, n, nMatched);
             break;
         case 'l':
             _alphaSort(*words, n);
-            _lenSort(*words, n);
+            qsort(*words, n, sizeof(const char*), _qsortLength);
             break;
         case 'a':
             _alphaSort(*words, n);

@@ -19,7 +19,7 @@ char **readDictionary(char * dictPath, int * nWords) {
     }
     while (message != EOF);
 
-    // last word read will be EOF so free and decrement i
+    // last word read will be EOF so decrement i and free
     i--;
     free(words[i]);
 
